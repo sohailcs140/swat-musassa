@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+
+
+{% block main_content %}
+<div class="container-xxl flex-grow-1 container-p-y" >
+  <h4 class="py-3 mb-4"><span class="text-muted fw-light">Employer (Kapil) /</span>{{employer.name|title }}</h4>
+  <div class="row">
+    <div class="col-lg-4 mb-4 mb-lg-0">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="profile-content">
+            <div class="profile-img">
+              
+              
+
+              {% if employer.image %}
+              <img src="{{employer.image.url}}" alt="avatar image of employer {{employer.name}}" class="img-fluid">
+          
+              {% else %}
+            
+              {% if employer.gender == "male" %}
+                  <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employer.name}}" class="img-fluid">
+              {% else %}
+                <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employer.name}}" class="img-fluid">
+
+              {% endif %}
+              {% endif %}
+
+                
+              <div class="username">
+                <div>
+                  <h4 style="margin-bottom: 0;">{{employer.name}}</h4>
+                  <p>{{employer.cnic}}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="user-profile-info">
+             
+              <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+                
+                <li class="list-inline-item">
+                  <i class="mdi mdi-map-marker-outline me-1 mdi-20px"></i><span class="fw-medium">{{employer.address}}</span>
+                </li>
+                <li class="list-inline-item">
+                  <i class="mdi mdi-calendar-blank-outline me-1 mdi-20px"></i><span class="fw-medium"> Joined 
+
+                    {{employer.create_at|date }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <small class="card-text text-uppercase">About</small>
+          <ul class="list-unstyled my-3 py-1">
+            <li class="d-flex align-items-center mb-3">
+              <i class="mdi mdi-account-outline mdi-24px"></i><span class="fw-medium mx-2">Full Name:</span> <span>{{employer.name|title }}</span>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <i class="mdi mdi-check mdi-24px"></i><span class="fw-medium mx-2">Status:</span>
+              <span>Active</span>
+            </li>
+          
+            
+          </ul>
+          <small class="card-text text-uppercase">Contacts</small>
+          <ul class="list-unstyled my-3 py-1">
+            <li class="d-flex align-items-center mb-3">
+              <i class="mdi mdi-phone-outline mdi-24px"></i><span class="fw-medium mx-2">Contact:</span>
+              <span>(+966) {{employer.phone}}</span>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <i class="mdi mdi-email-outline mdi-24px"></i><span class="fw-medium mx-2">Email:</span>
+              <span>{{employer.email}}</span>
+            </li>
+          </ul>
+         
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header p-0">
+          <div class="nav-align-top">
+            <ul class="nav nav-tabs nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link waves-effect active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-current-employees" aria-controls="navs-current-employees" aria-selected="false" tabindex="-1">
+                  <i class="tf-icons mdi mdi-home-outline me-1"></i> Current Employees
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-employees-history" aria-controls="navs-employees-history" aria-selected="false" tabindex="-1">
+                  <i class="tf-icons mdi mdi-account-outline me-1"></i> Employees History
+                </button>
+              </li>
+              
+            <span class="tab-slider" style="left: 387.787px; width: 210.613px; bottom: 0px;"></span></ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="tab-content p-0">
+            <div class="tab-pane fade  " id="navs-employees-history" role="tabpanel">
+              <div class="table-responsive text-nowrap">
+                <table class="table table-borderless">
+                  <thead class="border-bottom">
+                    <tr>
+                      <th class="text-capitalize text-body fw-medium fs-6">Employee</th>
+                      <th class="text-capitalize text-body fw-medium fs-6">issue Date</th>
+                      <th class="text-capitalize text-body fw-medium fs-6">expiry date</th>
+                      <th class="text-capitalize text-body fw-medium fs-6">Visa</th>
+                      <th class="text-capitalize text-body fw-medium fs-6 text-center">status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  
+                  {% for visa_renewal in  employer.visa_renewals.all %}
+                    
+                  <tr>
+                    <td class="d-flex pt-3">
+                      <div class="px-2  d-flex align-items-center h-px-30">
+                        
+                        <div class="avatar avatar-md">
+                          
+                          {% if visa_renewal.employe.image %}
+                              <img src="{{employee.image.url}}" alt="avatar image of employe {{visa_renewal.employee.name}}" class="rounded-circle pull-up">
+                          
+                              {% else %}
+                            
+                              {% if visa_renewal.employe.gender == "male" %}
+                                  <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{visa_renewal.employe.name}}" class="rounded-circle pull-up">
+                              {% else %}
+                                <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{visa_renewal.employe.name}}" class="rounded-circle  pull-up">
+        
+                              {% endif %}
+                              {% endif %}
+                        
+                            </div>
+                          
+                      </div>
+                      <div class="ms-3">
+                        <h6 class="mb-0">{{visa_renewal.employe.cnic}}</h6>
+                        <small>{{visa_renewal.employe.name}}</small>
+                      </div>
+                    </td>
+                    <td class="small pt-3">{{visa_renewal.curr_issue_date|date:"Y-m-d" }}</td>
+                    <td class="small pt-3">{{visa_renewal.curr_expiry_date|date:"Y-m-d" }}</td>
+                    <td class="small pt-3">{{visa_renewal.curr_visa_type|title }}</td>
+                   
+                    <td class=" pt-3">
+                      <span class="badge bg-label-{{visa_renewal.curr_expiry_date|get_badge_class}}">
+                        
+                        
+                        {% if visa_renewal.is_expired %}
+                            Visa Expired
+                          {% else %}
+                          {{visa_renewal.curr_expiry_date|timeuntil }} remain
+                        {% endif %}
+                      </span>
+                    </td>
+                  </tr>
+                  
+                  {% empty %}
+                  {% for employee in  employer.employees.all %}
+                  <tr>
+                    <td class="d-flex pt-3">
+                      <div class="px-2  d-flex align-items-center h-px-30">
+                        
+                        <div class="avatar avatar-md">
+                          
+                          {% if employee.image %}
+                              <img src="{{employee.image.url}}" alt="avatar image of employe {{employee.name}}" class="rounded-circle pull-up">
+                          
+                              {% else %}
+                            
+                              {% if employee.gender == "male" %}
+                                  <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employee.name}}" class="rounded-circle pull-up">
+                              {% else %}
+                                <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employee.name}}" class="rounded-circle  pull-up">
+        
+                              {% endif %}
+                              {% endif %}
+                        
+                            </div>
+                          
+                      </div>
+                      <div class="ms-3">
+                        <h6 class="mb-0">{{employee.cnic}}</h6>
+                        <small>{{employee.name}}</small>
+                      </div>
+                    </td>
+                    <td class="small pt-3">{{employee.issue_date|date:"Y-m-d" }}</td>
+                    <td class="small pt-3">{{employee.expiry_date|date:"Y-m-d" }}</td>
+                    <td class="small pt-3">{{employee.visa_type|title }}</td>
+                    <td class=" pt-3">
+                      <span class="badge bg-label-{{employee.expiry_date|get_badge_class}}">
+                        {% if employee.visa_expired %}
+                            Expired
+                          {% else %}
+                          {{employee.expiry_date|timeuntil }} remain
+                        {% endif %}
+                      </span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                  {% endfor %}
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane fade show active" id="navs-current-employees" role="tabpanel">
+              
+              <div class="table-responsive text-nowrap">
+                <table class="table table-borderless">
+                  <thead class="border-bottom">
+                    <tr>
+                      <th class="text-capitalize text-body fw-medium fs-6">Employee</th>
+                      <th class="text-capitalize text-body fw-medium fs-6">issue Date</th>
+                      <th class="text-capitalize text-body fw-medium fs-6">expiry date</th>
+                      <th class="text-capitalize text-body fw-medium fs-6">Visa</th>
+                      <th class="text-capitalize text-body fw-medium fs-6 text-center">status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  
+                  {% for employee in  employer.employees.all %}
+                  <tr>
+                    <td class="d-flex pt-3">
+                      <div class="px-2  d-flex align-items-center h-px-30">
+                        
+                        <div class="avatar avatar-md">
+                          
+                          {% if employee.image %}
+                              <img src="{{employee.image.url}}" alt="avatar image of employe {{employee.name}}" class="rounded-circle pull-up">
+                          
+                              {% else %}
+                            
+                              {% if employee.gender == "male" %}
+                                  <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employee.name}}" class="rounded-circle pull-up">
+                              {% else %}
+                                <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employee.name}}" class="rounded-circle  pull-up">
+        
+                              {% endif %}
+                              {% endif %}
+                        
+                            </div>
+                          
+                      </div>
+                      <div class="ms-3">
+                        <h6 class="mb-0">{{employee.cnic}}</h6>
+                        <small>{{employee.name}}</small>
+                      </div>
+                    </td>
+                    <td class="small pt-3">{{employee.issue_date|date:"Y-m-d" }}</td>
+                    <td class="small pt-3">{{employee.expiry_date|date:"Y-m-d" }}</td>
+                    <td class="small pt-3">{{employee.visa_type|title }}</td>
+                    <td class=" pt-3">
+                      <span class="badge bg-label-{{employee.expiry_date|get_badge_class}}">
+                        {% if employee.visa_expired %}
+                            Expired
+                          {% else %}
+                          {{employee.expiry_date|timeuntil }} remain
+                        {% endif %}
+                      </span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock main_content %}
+    

@@ -1,0 +1,460 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% load app_tags %}
+
+{% block main_content %}
+
+<div class="container-xxl flex-grow-1 container-p-y" >
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Visa Renewal </h4>
+    <div class="card">
+      
+     {% comment %} search form {% endcomment %}
+      <div class="d-flex justify-content-between mb-4">
+        <form action="" method="get">
+            
+          <div class="text-start p-2 d-flex gap-2">
+              <input type="text" name="visa_issue_date" 
+              class="form-control dates_typeahead"
+               placeholder="Search by visa issue date" required="" id="id_issue_date"
+               autocomplete="off"
+               value="{{request.GET.visa_issue_date}}">
+              
+              <button type="button" 
+              data-bs-target="#filterModal"
+              data-bs-toggle="modal"
+              class="btn btn-icon btn-label-primary waves-effect">
+                <span class="tf-icons mdi mdi-filter-menu-outline"></span>
+              </button>
+            </div>
+        </form>
+          <div class=" text-end p-2">
+            <button type="button" 
+            data-bs-target="#add_offcanvas"
+            data-bs-toggle="offcanvas"
+            class="btn btn-primary waves-effect waves-light">
+            <span class="tf-icons mdi mdi-plus-circle"></span>
+          </button>
+          </div>
+      </div>
+      {% comment %} /search form {% endcomment %}
+      <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr class="text-nowrap">
+              <th>#</th>
+              <th></th>
+              <th>Name</th>
+              <th>Iqama Number</th>
+              <th>Work/Profession</th>
+              <th>Visa Type</th>
+              <th>Visa issue date</th>
+              <th>Visa expiry date</th>
+              <th>employer (Saudi Kapil)</th>
+              <th>Remarks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            
+            {% for visa_renewal in visa_renewals %}
+              
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>
+                <div class="avatar avatar-md">
+                  {% if visa_renewal.emaploye.image %}
+                      <img src="{{visa_renewal.emaploye.image.url}}" alt="avatar image of employe {{visa_renewal.emaploye.name}}" class="rounded-circle pull-up">
+                  
+                      {% else %}
+                    
+                      {% if visa_renewal.emaploye.gender == "male" %}
+                          <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{visa_renewal.emaploye.name}}" class="rounded-circle">
+                      {% else %}
+                        <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{visa_renewal.emaploye.name}}" class="rounded-circle">
+
+                      {% endif %}
+                      {% endif %}
+                </div>
+              </td>
+              <td>
+                
+                {{visa_renewal.employe.name }}
+              </td>
+              
+              <td>
+                {{visa_renewal.employe.cnic}}
+              </td>
+              <td>
+                {{visa_renewal.curr_profession}}
+              </td>
+              
+              <td>
+                {{visa_renewal.curr_visa_type}}
+              </td>
+              <td>
+                {{visa_renewal.curr_issue_date|date:"Y-m-d" }}
+              </td>
+              <td>
+                {{visa_renewal.curr_expiry_date|date:"Y-m-d"}}
+              </td>
+              <td>
+                {{visa_renewal.curr_saudi_kapil}}
+              </td>
+              <td>
+                {{visa_renewal.remarks}}
+              </td>
+              <td>
+
+                <button type="button" 
+                  data-bs-target="#edit_offcanvas_{{visa_renewal.id}}"
+                  data-bs-toggle="offcanvas"
+                  class="btn btn-icon btn-outline-primary waves-effect">
+                      <span class="tf-icons mdi mdi-square-edit-outline"></span>
+                    </button>
+
+                <button type="button" 
+                data-bs-target="#delete_model_{{visa_renewal.id}}"
+                data-bs-toggle="modal"
+                class="btn btn-icon btn-outline-danger waves-effect">
+                    <span class="tf-icons mdi mdi-delete-outline"></span>
+                </button>
+              </td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td  colspan="11">
+                  <p class="text-center">No records found.</p></td>
+                
+              </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+     {% comment %} Pagination {% endcomment %}
+     {% include 'includes/pagination.html' %}
+    </div>
+  </div>
+  
+
+
+    <!-- Offcanvas to add new record -->
+    <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="add_offcanvas"
+    aria-labelledby="add_offcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 id="add_offcanvasLabel" class="offcanvas-title">Add Visa Renewal</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-0 flex-grow-0">
+      <form  action="." method="post"  class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.employe}}
+            <label for="id_profession">Employe*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.curr_saudi_kapil}}
+            <label for="id_profession">Employer (Saudi Kapil)*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.curr_visa_type}}
+            <label for="id_profession">Visa Type*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+        
+        <div class="row">
+            <div class="col-6">
+                <div class="form-floating form-floating-outline mb-4 ">
+                    {{form.curr_issue_date}}
+                    <label for="id_gender">Visa Issue Date*</label>
+                    <div class="invalid-feedback">this field is required</div>
+                </div>
+            </div>
+           <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                {{form.curr_expiry_date}}
+                <label for="id_name">Visa Expiry Date*</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+           </div>
+        </div>
+        
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.curr_profession}}
+            <label for="id_profession">Work/Profession*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+       
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.remarks}}
+            <label for="id_profession">Remarks (Optional)</label>
+        </div>
+        
+        <div class="pt-1">
+          <button type="submit" 
+           
+            class="btn btn-primary me-sm-3 me-1 data-submit"
+          
+           >
+          <span class="mdi tf-icons mdi-content-save"></span>
+          </button>
+          <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+            <span class="mdi tf-icons mdi-close-circle-outline"></span>
+          </button>
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+
+ 
+<!-- Offcanvas to update the record -->
+
+{% for renew  in visa_renewals %}
+  
+<div
+class="offcanvas offcanvas-end"
+tabindex="-1"
+id="edit_offcanvas_{{renew.id}}"
+aria-labelledby="edit_offcanvasLabel_{{renew.id}}">
+<div class="offcanvas-header border-bottom">
+  <h5 id="edit_offcanvasLabel_{{renew.id}}" class="offcanvas-title">Edit Visa Renew </h5>
+  <button
+    type="button"
+    class="btn-close text-reset"
+    data-bs-dismiss="offcanvas"
+    aria-label="Close"></button>
+</div>
+<div class="offcanvas-body mx-0 flex-grow-0">
+  <form action="{% url 'app:visa-renew-update' renew.id %}" method="post" class="needs-validation" novalidate="" >
+  
+    {% csrf_token %}
+        
+    <div class="form-floating form-floating-outline mb-4 ">
+        <select name="employe" id="employe_edit_id" class="select2 form-select form-select-lg">
+          {% for employe in employees %}
+            <option value="{{employe.id}}" {% if employe.id == renew.employe.id  %} selected {% endif %}>{{employe}}</option>
+          {% endfor %}
+        </select>
+        <label for="id_profession">Employe*</label>
+        <div class="invalid-feedback">this field is required</div>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4 ">
+        <select name="curr_saudi_kapil" id="curr_saudi_kapil_edit_id" class="select2 form-select form-select-lg">
+          {% for employer in employers %}
+            <option value="{{employer.id}}" {% if employer.id == renew.curr_saudi_kapil.id  %} selected {% endif %}>{{employer}}</option>
+          {% endfor %}
+        </select>
+        <label for="id_profession">Employer (Saudi Kapil)*</label>
+        <div class="invalid-feedback">this field is required</div>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4 ">
+        <select name="curr_visa_type" id="curr_visa_type_edit_id" class="select2 form-select form-select-lg">
+          {% for visa in visa_types %}
+            <option value="{{visa.id}}" {% if visa.id == renew.curr_visa_type.id  %} selected {% endif %}>{{visa.name}}</option>
+          {% endfor %}
+        </select>
+        <label for="id_profession">Visa Type*</label>
+        <div class="invalid-feedback">this field is required</div>
+    </div>
+    
+    <div class="row">
+      <div class="col-6">
+          <div class="form-floating form-floating-outline mb-4 ">
+              <input type="text" name="curr_issue_date" 
+              class="form-control date-mask" placeholder="YYYY-MM-DD" required="" 
+              id="id_curr_issue_date_edit"
+              value="{{renew.curr_issue_date|date:'Y-m-d' }}"
+              >
+              <label for="id_curr_issue_date_edit">Visa Issue Date*</label>
+              <div class="invalid-feedback">this field is required</div>
+          </div>
+      </div>
+     <div class="col-6">
+      <div class="form-floating form-floating-outline mb-4 ">
+          <input type="text" name="curr_expiry_date" class="form-control date-mask" 
+          placeholder="YYYY-MM-DD" required="" id="id_curr_expiry_date_edit"
+          value="{{renew.curr_expiry_date|date:'Y-m-d'}}"
+          >
+          <label for="id_curr_expiry_date_edit">Visa Expiry Date*</label>
+          <div class="invalid-feedback">this field is required</div>
+      </div>
+     </div>
+  </div>
+  <div class="form-floating form-floating-outline mb-4 ">
+    <input type="text" name="curr_profession" maxlength="50" class="form-control" 
+    placeholder="Enter Profession" required="" id="id_curr_profession_edit"
+    value="{{renew.curr_profession}}">
+    <label for="id_curr_profession_edit">Work/Profession*</label>
+    <div class="invalid-feedback">this field is required</div>
+  </div>
+   
+  <div class="form-floating form-floating-outline mb-4 ">
+    <textarea name="remarks" cols="40" rows="10" maxlength="80" class="form-control h-px-100" placeholder="Enter Remarks" id="id_remarks_edit">{{renew.remarks}}</textarea>
+    <label for="id_profession">Remarks (Optional)</label>
+</div>
+    
+    <div class="pt-1">
+      <button type="submit" 
+       
+        class="btn btn-primary me-sm-3 me-1 data-submit"
+      
+       >
+      <span class="mdi tf-icons mdi-content-save"></span>
+      </button>
+      <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+        <span class="mdi tf-icons mdi-close-circle-outline"></span>
+      </button>
+    </div>
+    
+  </form>
+</div>
+</div>
+
+{% endfor %}
+
+{% comment %} delete popup {% endcomment %}
+
+<!-- Modal -->
+
+{% for renew  in visa_renewals %}
+  
+<div class="modal fade" id="delete_model_{{renew.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'app:visa-renew-delete' renew.id %}">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{renew.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete? This action cannot be undone.
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+
+<div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel2">Filter Records</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form action="" method="get" id="filterForm">
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col mb-2">
+              <label for="id_cnic_filter" class="form-label">Iqama Number</label>
+              <input type="text" name="employe_iqama" maxlength="10" class="form-control cnic_typeahead iqamaMask" 
+              autocomplete="false"
+              aria-label="Enter Iqama Number" placeholder="2XXXXXXXXX"
+              value="{{request.GET.iqama_number}}" 
+               id="id_cnic_filter">
+              
+          </div>
+          <div class="col mb-2">
+            <label for="#visa_type" class="form-label">Visa</label>
+              <select name="visa_type" class="form-select" id="visa_type">
+                <option value="" selected>------</option>
+                {% for visa_type in visa_types %}
+                    <option value="{{visa_type.name}}"
+                    
+                    {% if request.GET.visa_type|lower  == visa_type.name|lower %}
+                      selected
+                    {% endif %}
+                      
+                    >{{visa_type.name}}</option>
+                {% endfor %}
+                  
+              </select>
+              
+          </div>
+        </div>
+        <div>
+          <label for="select2Basic" class="form-label">Employer (Saudi Kapil)</label>
+          <select
+            id="select2Basic"
+            class="select2 form-select form-select-lg"
+            data-allow-clear="true"
+            name="employer"
+            >
+            
+            {% for employer in employers %}
+              <option value="{{employer.id}}" 
+              {% if request.GET.employer == employer.id %}
+                selected
+              {% endif %}
+                >{{employer}}</option>
+            {% endfor %}
+
+            
+          </select>
+        </div>
+          
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% get_cnic_from_visa_renewal as get_employee_cnic_as_list  %}
+{{get_employee_cnic_as_list|json_script:"employee_cnic_as_list"}}
+<script type="application/json" id="not_sumbit">
+  {
+    is_submit:false
+  }
+</script>
+
+{% get_issue_dates_from_visa_renewal as visa_renewals_dates %}
+{{visa_renewals_dates|json_script:"visa_renewals_dates"}}
+{% endblock main_content %}
+  
+

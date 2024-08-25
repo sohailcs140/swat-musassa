@@ -1,0 +1,584 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% load app_tags %}
+
+
+{% block main_content %}
+
+<div class="container-xxl flex-grow-1 container-p-y" >
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Employees </h4>
+    <div class="card">
+      
+     {% comment %} search form {% endcomment %}
+      <div class="d-flex justify-content-between mb-4">
+        <form action="" method="get">
+            
+          <div class="text-start p-2 d-flex gap-2">
+              <input type="search"  class="form-control names_typeahead" 
+              autocomplete="off"
+              name="name" id="" value="{{request.GET.name}}" placeholder="search by name"
+              
+              >
+              <button type="button" 
+              data-bs-target="#filterModal"
+              data-bs-toggle="modal"
+              class="btn btn-icon btn-label-primary waves-effect">
+                <span class="tf-icons mdi mdi-filter-menu-outline"></span>
+              </button>
+            </div>
+        </form>
+          <div class=" text-end p-2">
+            <button type="button" 
+            data-bs-target="#add_offcanvas"
+            data-bs-toggle="offcanvas"
+            class="btn btn-primary waves-effect waves-light">
+            <span class="tf-icons mdi mdi-plus-circle"></span>
+          </button>
+          </div>
+      </div>
+      {% comment %} /search form {% endcomment %}
+      <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr class="text-nowrap">
+              <th>#</th>
+              <th></th>
+              <th>Name</th>
+              <th>Father Name</th>
+              <th>Iqama Number</th>
+              <th>Phone</th>
+              <th>location</th>
+              <th>Work/Profession</th>
+              <th>Visa Type</th>
+              <th>Visa issue date</th>
+              <th>Visa expiry date</th>
+              <th>employer (Saudi Kapil)</th>
+              <th>Gender</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            
+            {% for employe in employees %}
+              
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{employe.name}}">
+                <a href="{% url 'app:employe-detail' employe.id %}">
+                <div class="avatar avatar-md">
+                  
+                  {% if employe.image %}
+                      <img src="{{employe.image.url}}" alt="avatar image of employe {{emplye.name}}" class="rounded-circle pull-up">
+                  
+                      {% else %}
+                    
+                      {% if employe.gender == "male" %}
+                          <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employe.name}}" class="rounded-circle">
+                      {% else %}
+                        <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employe.name}}" class="rounded-circle">
+
+                      {% endif %}
+                      {% endif %}
+                </div>
+                </a>
+              </td>
+              <td>
+                
+                {{employe.name }}
+              </td>
+              <td>
+                {{employe.fname}}
+              </td>
+              <td ondblclick="copy_to_clip_board(this)">
+                {{employe.cnic}}
+              </td>
+              <td ondblclick="copy_to_clip_board(this)">
+                +966 {{employe.phone}}
+              </td>
+              <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{employe.work_location}}">
+                {{employe.work_location|truncatechars:"20" }}
+              </td>
+              <td data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{employe.profession}}">
+                {{employe.profession|truncatechars:"20" }}
+              </td>
+              <td>
+                {{employe.visa_type|truncatechars:"30"}}
+              </td>
+              <td>
+                {{employe.issue_date|date:"Y-m-d" }}
+              </td>
+              <td>
+                {{employe.expiry_date|date:"Y-m-d"}}
+              </td>
+              <td>
+                {{employe.saudi_kapil|truncatechars:"30"}}
+              </td>
+              
+              <td>
+                <span class="badge bg-label-{{employe.gender|gender_badge_class }}">{{employe.gender|title }}</span>
+              </td>
+              <td>
+                <a href="{% url 'app:employee_report' employe.id %}" 
+                
+                class="btn btn-icon btn-outline-info waves-effect">
+                    <span class="tf-icons mdi mdi-printer-outline"></span>
+              </a>
+
+                <button type="button" 
+                data-bs-target="#edit_offcanvas_{{employe.id}}"
+                data-bs-toggle="offcanvas"
+                class="btn btn-icon btn-outline-primary waves-effect">
+                    <span class="tf-icons mdi mdi-square-edit-outline"></span>
+                  </button>
+                <button type="button" 
+                data-bs-target="#delete_model_{{employe.id}}"
+                data-bs-toggle="modal"
+                class="btn btn-icon btn-outline-danger waves-effect">
+                    <span class="tf-icons mdi mdi-delete-outline"></span>
+                </button>
+               
+              </td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td  colspan="12">
+                  <p class="text-center">No records found.</p></td>
+                
+              </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+     {% comment %} Pagination {% endcomment %}
+     {% include 'includes/pagination.html' %}
+    </div>
+  </div>
+  
+
+
+    <!-- Offcanvas to add new record -->
+    <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="add_offcanvas"
+    aria-labelledby="add_offcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 id="add_offcanvasLabel" class="offcanvas-title">Add Employe</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-0 flex-grow-0">
+      <form  action="." method="post"  class="needs-validation" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-6">
+                <div class="form-floating form-floating-outline mb-4 ">
+                    {{form.name}}
+                    <label for="id_name">Name*</label>
+                    <div class="invalid-feedback">this field is required</div>
+                </div>
+            </div>
+           <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                {{form.fname}}
+                <label for="id_name">Father Name*</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+           </div>
+        </div>
+      
+
+        <div class="form-floating form-floating-outline mb-4 ">
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">SA (+966)</span>
+                <div class="form-floating form-floating-outline">
+                {{form.phone}}
+                <label for="id_phone">Phone (Optional)</label>
+                <div class="invalid-feedback">this field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.cnic}}
+            <label for="id_cnic">National ID Number (Iqama Number)*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+      
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-floating form-floating-outline mb-4 ">
+                    {{form.gender}}
+                    <label for="id_gender">Gender</label>
+                    <div class="invalid-feedback">this field is required</div>
+                </div>
+            </div>
+           <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                {{form.visa_type}}
+                <label for="id_name">Visa*</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+           </div>
+        </div>
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.profession}}
+            <label for="id_profession">Work/Profession*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+
+        <div class="form-floating form-floating-outline mb-4 ">
+            {{form.image}}
+            <label for="id_image">Image (optional)</label>
+        </div>
+       
+        <div class="row">
+            <div class="col-6">
+                <div class="form-floating form-floating-outline mb-4 ">
+                    {{form.issue_date}}
+                    <label for="id_issue_date">Visa Issue Date*</label>
+                    <div class="invalid-feedback">this field is required</div>
+                </div>
+            </div>
+           <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                {{form.expiry_date}}
+                <label for="id_name">Visa Expiry Date*</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+           </div>
+        </div>
+        <div class="form-floating form-floating-outline mb-4 ">
+          {{form.email}}
+          <label for="id_email">Email (optional)</label>
+        </div>
+
+        <div class="form-floating form-floating-outline mb-4 ">
+          {{form.work_location}}
+          <label for="id_work_location">location/work location (optional)</label>
+        </div>
+        
+        <div class="form-floating form-floating-outline mb-4 ">
+          {{form.language}}
+          <label for="id_language">language (optional)</label>
+        </div>
+        
+        <div class="form-floating form-floating-outline mb-4 ">
+          {{form.country}}
+          <label for="id_country">Country*</label>
+          <div class="invalid-feedback">this field is required</div>
+        </div>
+
+      <div class="form-floating form-floating-outline mb-4 ">
+          {{form.saudi_kapil}}
+          <label for="id_profession">Employer (Saudi Kapil)*</label>
+          <div class="invalid-feedback">this field is required</div>
+      </div>
+
+        
+
+        
+        
+        <div class="pt-1">
+          <button type="submit" 
+           
+            class="btn btn-primary me-sm-3 me-1 data-submit"
+          
+           >
+          <span class="mdi tf-icons mdi-content-save"></span>
+          </button>
+          <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+            <span class="mdi tf-icons mdi-close-circle-outline"></span>
+          </button>
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+
+ 
+<!-- Offcanvas to update the record -->
+
+{% for employe  in employees %}
+<div
+class="offcanvas offcanvas-end"
+tabindex="-1"
+id="edit_offcanvas_{{employe.id}}"
+aria-labelledby="edit_offcanvasLabel_{{employe.id}}">
+<div class="offcanvas-header border-bottom">
+  <h5 id="edit_offcanvasLabel_{{employe.id}}" class="offcanvas-title">Edit Employe </h5>
+  <button
+    type="button"
+    class="btn-close text-reset"
+    data-bs-dismiss="offcanvas"
+    aria-label="Close"></button>
+</div>
+<div class="offcanvas-body mx-0 flex-grow-0">
+  <form action="{% url 'app:employe-update' employe.id %}" method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                <input type="text" name="name" maxlength="50" class="form-control" 
+                placeholder="Enter Name" required="" id="id_name" value="{{employe.name}}">
+                <label for="id_name">Name*</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+        </div>
+       <div class="col-6">
+        <div class="form-floating form-floating-outline mb-4 ">
+            <input type="text" name="fname" value="{{employe.fname}}"
+            maxlength="50" class="form-control" placeholder="Enter Fname" required="" id="id_fname">
+            <label for="id_name">Father Name*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+       </div>
+    </div>
+  
+
+    <div class="form-floating form-floating-outline mb-4 ">
+        <div class="input-group input-group-merge">
+            <span class="input-group-text">SA (+966)</span>
+            <div class="form-floating form-floating-outline">
+            <input type="text" name="phone" maxlength="10" 
+            class="form-control phone-number-mask" placeholder="5987896843" 
+            aria-label="Enter phone" id="id_phone" value="{{employe.phone}}">
+            <label for="id_phone">Phone (Optional)</label>
+            <div class="invalid-feedback">this field is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-floating form-floating-outline mb-4 ">
+        <input type="text" name="cnic" maxlength="10" class="form-control iqamaMask" 
+        placeholder="2XXXXXXXXX" aria-label="Enter Iqama Number" required="" 
+        id="id_cnic" value="{{employe.cnic}}">
+        <label for="id_cnic">National ID Number (Iqama Number)*</label>
+        <div class="invalid-feedback">this field is required</div>
+    </div>
+  
+
+    <div class="row">
+        <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                <select name="gender" class="form-control" placeholder="Enter Gender" id="id_gender">
+                  <option value="male" {% if employe.gender == male %}selected{% endif %}>Male</option>  
+                  <option value="female" {% if employe.gender == female %}selected{% endif %}>FeMale</option>
+                  <option value="other" {% if employe.gender == other %}selected{% endif %}>Other</option>
+                </select>
+                <label for="id_gender">Gender</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+        </div>
+       <div class="col-6">
+        <div class="form-floating form-floating-outline mb-4 ">
+          <select name="visa_type" class="select2 form-select form-select-lg" placeholder="Enter Visa_type" required="" id="id_visa_type">
+            
+            {% for visa_type in visa_types %}
+
+            <option value="{{visa_type.id}}" {% if visa_type.id == employe.visa_type.id %}selected{% endif %} >{{visa_type.name}}</option>
+            
+            {% endfor %}
+
+          </select>
+          <label for="id_name">Visa*</label>
+          <div class="invalid-feedback">this field is required</div>
+      </div>
+       </div>
+    </div>
+    <div class="form-floating form-floating-outline mb-4 ">
+        <input type="text" name="profession" maxlength="50" 
+        class="form-control" placeholder="Enter Profession" required="" id="id_profession"
+        value="{{employe.profession}}"
+        >
+        <label for="id_profession">Work/Profession*</label>
+        <div class="invalid-feedback">this field is required</div>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4 ">
+        <input type="file" name="image" accept="image/*" class="form-control" placeholder="Enter Image" id="id_image">
+        <label for="id_image">Image (Optional)</label>
+        
+        {% if employe.image %}
+        <a href="{{employe.image.url}}" target="_blank">
+          Image in use : {{employe.image.name|truncatechars:"30" }}
+        </a>
+        {% endif %}
+          
+    </div>
+   
+    <div class="row">
+        <div class="col-6">
+            <div class="form-floating form-floating-outline mb-4 ">
+                <input type="text" name="issue_date" class="form-control date-mask"
+                 placeholder="YYYY-MM-DD" required="" id="id_issue_date"
+                 value="{{employe.issue_date|date:'Y-m-d'}}">
+                <label for="id_gender">Visa Issue Date*</label>
+                <div class="invalid-feedback">this field is required</div>
+            </div>
+        </div>
+       <div class="col-6">
+        <div class="form-floating form-floating-outline mb-4 ">
+            <input type="text" name="expiry_date"
+            
+            value="{{employe.expiry_date|date:'Y-m-d'}}"
+            class="form-control date-mask" placeholder="YYYY-MM-DD" required="" id="id_expiry_date">
+            <label for="id_name">Visa Expiry Date*</label>
+            <div class="invalid-feedback">this field is required</div>
+        </div>
+       </div>
+    </div>
+    
+    <div class="form-floating form-floating-outline mb-4 ">
+      <input type="email" name="email" value="{{employe.email}}"
+      maxlength="50" class="form-control" placeholder="Enter email" required id="id_email">
+      <label for="id_name">Email(optional)</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4 ">
+      <input type="text" name="work_location" value="{{employe.work_location}}"
+      maxlength="50" class="form-control" placeholder="Enter work/location"  id="id_work_location">
+      <label for="id_name">location/work location (optional)</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4 ">
+      <input type="text" name="language" value="{{employe.language}}"
+      maxlength="50" class="form-control" placeholder="Enter language"  id="id_language">
+      <label for="id_name">language (optional)</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4 ">
+      <select name="country" class="select2 form-select form-select-lg"  required="" id="id_country">
+        {% for value, key in countries.items %}
+
+        <option value="{{key|lower }}" {% if key|lower == employe.country|lower %}selected{% endif %}>{{value}}</option>
+        
+        {% endfor %}
+      </select>
+      <label for="id_country">Country*</label>
+      <div class="invalid-feedback">this field is required</div>
+  </div>
+
+
+    <div class="form-floating form-floating-outline mb-4 ">
+        <select name="saudi_kapil" class="select2 form-select form-select-lg" placeholder="Enter Saudi_kapil" required="" id="id_saudi_kapil">
+          {% for employer in employers %}
+
+          <option value="{{employer.id}}" {% if employer.id == employe.saudi_kapil.id %}selected{% endif %}>{{employer.name}}</option>
+          
+          {% endfor %}
+        </select>
+        <label for="id_profession">Employer (Saudi Kapil)*</label>
+        <div class="invalid-feedback">this field is required</div>
+    </div>
+    
+    <div class="pt-1">
+      <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit waves-effect waves-light">
+      <span class="mdi tf-icons mdi-content-save"></span>
+      </button>
+      <button type="reset" class="btn btn-outline-danger waves-effect" data-bs-dismiss="offcanvas">
+        <span class="mdi tf-icons mdi-close-circle-outline"></span>
+      </button>
+    </div>
+
+  </form>
+</div>
+</div>
+
+{% endfor %}
+
+{% comment %} delete popup {% endcomment %}
+
+<!-- Modal -->
+
+{% for employe  in employees %}
+  
+<div class="modal fade" id="delete_model_{{employe.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'app:employe-deactivate' employe.id %}">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{employe.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete <strong class="text-danger">{{employe.name}}</strong>? You can undo it from the Recycle Bin.
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+
+<div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel2">Filter Records</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form action="" method="get">
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col mb-2">
+            <label for="search" class="form-lable mb-1">Iqama Number</label>
+              <input type="search" name="iqama_number" maxlength="10" 
+              class="form-control iqamaMask cnic_typeahead" 
+              autocomplete="off"
+              aria-label="Enter Iqama Number" placeholder="2XXXXXXXXX"
+              value="{{request.GET.iqama_number}}" 
+               id="id_cnic_filter">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary">Filter</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% get_employee_names_as_list as employee_names_as_list %}
+{{ employee_names_as_list|json_script:"employee_names_list" }}
+
+{% get_employee_cnic_as_list as employee_cnic_as_list %}
+{{ employee_cnic_as_list|json_script:"employee_cnic_as_list" }}
+
+
+
+{% endblock main_content %}
+  
+
