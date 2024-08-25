@@ -9,8 +9,7 @@
 1. **Clone the repository:**
 
    ```
-   git clone https://github.com/yourusername/your-repository.git
-   cd your-repository 
+    https://github.com/sohailcs140/swat-musassa.git
    
    ```
 
