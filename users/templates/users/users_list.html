@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_content %}
+
+<div class="container-xxl flex-grow-1 container-p-y" >
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Users </h4>
+    <div class="card">
+      
+     {% comment %} search form {% endcomment %}
+      <div class="d-flex justify-content-between mb-4">
+        <form action="" method="get">
+            
+          <div class="text-start p-2 d-flex gap-2">
+              <input type="search"  class="form-control" name="name" id="" placeholder="Search by name">
+              
+            </div>
+        </form>
+          <div class=" text-end p-2">
+            <button type="button" 
+            data-bs-target="#add_offcanvas"
+            data-bs-toggle="offcanvas"
+            class="btn btn-primary waves-effect waves-light">
+            <span class="tf-icons mdi mdi-plus-circle"></span>
+          </button>
+          </div>
+      </div>
+      {% comment %} /search form {% endcomment %}
+      <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr class="text-nowrap">
+              <th>#</th>
+              <th></th>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Admin</th>
+              <th>staff</th>
+              <th>active</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            
+            {% for user in users %}
+              
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>
+                <div class="avatar avatar-md">
+                  
+                  {% if user.image %}
+                      <img src="{{user.image.url}}" alt="image of {{user.name}}" class="rounded-circle">
+                  
+                  {% else %}
+                     
+                    <img src="{% static 'assets/img/avatars/4.png'  %}" alt="image of {{user.name}}" class="rounded-circle">
+                  {% endif %}
+                    
+                </div>
+              </td>
+              <td>{{user.email}}</td>
+              <td>{{user.first_name}}</td>
+              <td>{{user.last_name}}</td>
+              <td>{{user.is_superuser}}</td>
+              <td>{{user.is_staff}}</td>
+              <td>{{user.is_active}}</td>
+              <td>
+                <button type="button" 
+                data-bs-target="#edit_offcanvas_{{user.id}}"
+                data-bs-toggle="offcanvas"
+                class="btn btn-icon btn-outline-primary waves-effect">
+                    <span class="tf-icons mdi mdi-square-edit-outline"></span>
+                  </button>
+                <button type="button" 
+                data-bs-target="#delete_model_{{user.id}}"
+                data-bs-toggle="modal"
+                class="btn btn-icon btn-outline-danger waves-effect"
+                id="popoverButton">
+                    <span class="tf-icons mdi mdi-delete-outline"></span>
+                </button>
+              </td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td  colspan="9">
+                  <p class="text-center">No records found.</p></td>
+                
+              </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+      {% comment %} Pagination {% endcomment %}
+      {% include 'includes/pagination.html' %}
+    </div>
+  </div>
+  
+
+
+    <!-- Offcanvas to add new record -->
+    <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="add_offcanvas"
+    aria-labelledby="add_offcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 id="add_offcanvasLabel" class="offcanvas-title">Add New User</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-0 flex-grow-0">
+    
+      <form  class="formAuthentication"  method="POST" enctype="multipart/form-data">
+              
+        {% csrf_token %}
+
+        <div class="row">
+          <div class="col">
+              <div class="form-floating form-floating-outline mb-4 ">
+                  {{form.first_name}}
+                  <label for="id_name">First Name*</label>
+              </div>
+          </div>
+          <div class="col">
+              <div class="form-floating form-floating-outline mb-4 ">
+                  {{form.last_name}}
+                  <label for="id_name">Last Name*</label>
+                </div>
+          </div>
+        </div>
+        <div class="form-floating form-floating-outline mb-3">
+          {{form.email}}
+          <label for="id_email">Email</label>
+        </div>
+
+
+        <div class="mb-3">
+          <div class="form-password-toggle">
+            <div class="input-group input-group-merge">
+              <div class="form-floating form-floating-outline">
+                {{form.password}}
+                <label for="id_password">Password</label>
+              </div>
+              <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-password-toggle">
+            <div class="input-group input-group-merge">
+              <div class="form-floating form-floating-outline">
+                {{form.confirm_password}}
+                <label for="id_confirm_password">Confirm Password</label>
+              </div>
+              <span class="input-group-text cursor-pointer"><i class="mdi mdi-eye-off-outline"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="form-floating form-floating-outline mb-3">
+          {{form.image}}
+          
+          <label for="id_email">Image</label>
+        </div>
+        <div class="mt-4">
+          <div >
+              {{form.is_superuser}}
+              <label for="id_is_superuser">Is Admin</label>
+          </div>
+          <div class="my-3">
+              {{form.is_staff}}
+              <label for="id_is_staff">Is Staff</label>
+          </div>
+          <div>
+              {{form.is_active}}
+              <label for="id_is_active">Is Active</label>
+          </div>
+       </div>
+
+
+      <div class="pt-3">
+        <button type="submit" 
+         
+          class="btn btn-primary me-sm-3 me-1 data-submit"
+        
+         >
+        <span class="mdi tf-icons mdi-content-save"></span>
+        </button>
+        <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+          <span class="mdi tf-icons mdi-close-circle-outline"></span>
+        </button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+
+ 
+<!-- Offcanvas to update the record -->
+
+{% for user  in users %}
+  
+<div
+class="offcanvas offcanvas-end"
+tabindex="-1"
+id="edit_offcanvas_{{user.id}}"
+aria-labelledby="edit_offcanvasLabel_{{user.id}}">
+<div class="offcanvas-header border-bottom">
+  <h5 id="edit_offcanvasLabel_{{user.id}}" class="offcanvas-title">Edit User</h5>
+  <button
+    type="button"
+    class="btn-close text-reset"
+    data-bs-dismiss="offcanvas"
+    aria-label="Close"></button>
+</div>
+<div class="offcanvas-body mx-0 flex-grow-0">
+  <form  action="{% url 'user-update' user.id %}" method="post"  class="formAuthentication" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="row">
+      <div class="col">
+          <div class="form-floating form-floating-outline mb-4 ">
+              <input type="text" name="first_name" maxlength="150" class="form-control" 
+              placeholder="Enter First Name" id="id_first_name" value="{{user.first_name}}">
+              <label for="id_name">First Name*</label>
+          </div>
+      </div>
+      <div class="col">
+          <div class="form-floating form-floating-outline mb-4 ">
+              <input type="text" name="last_name" maxlength="150" value="{{user.last_name}}" class="form-control" placeholder="Enter Last Name" id="id_last_name">
+              <label for="id_name">Last Name*</label>
+            </div>
+      </div>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-3 fv-plugins-icon-container">
+      <input type="email" name="email" maxlength="254" 
+      value="{{user.email}}"
+      class="form-control" placeholder="Enter Email" required="" id="id_email">
+      <label for="id_email">Email</label>
+    </div>
+    
+   
+    <div class="form-floating form-floating-outline mb-3">
+      <input type="file" name="image" accept="image/*" class="form-control" placeholder="Enter Image" id="id_image">
+      
+      <label for="id_email">Image</label>
+    </div>
+
+    {% if user.image %}
+    <a href="#">Image in use: {{user.image.name|truncatechars:"20"}}</a>
+    {% endif %}
+
+    <div class="mt-4">
+      <div>
+          <input type="checkbox" name="is_superuser" class="form-check-input" aria-describedby="id_is_superuser_helptext" 
+          id="id_is_superuser-{{user.id}}" {% if user.is_superuser %}checked="" {% endif %}>
+          <label for="id_is_superuser-{{user.id}}">Is Admin</label>
+      </div>
+      <div class="my-3">
+          <input type="checkbox" name="is_staff" class="form-check-input" aria-describedby="id_is_staff_helptext" 
+          id="id_is_staff-{{user.id}}" {% if user.is_staff %}checked="" {% endif %}>
+          <label for="id_is_staff-{{user.id}}">Is Staff</label>
+      </div>
+      <div>
+          <input type="checkbox" name="is_active" class="form-check-input" 
+          aria-describedby="id_is_active_helptext" 
+          id="id_is_active-{{user.id}}" {% if user.is_active %}checked="" {% endif %}>
+          <label for="id_is_active-{{user.id}}">Is Active</label>
+      </div>
+   </div>
+
+    <div class="pt-3">
+      <button type="submit" 
+       
+        class="btn btn-primary me-sm-3 me-1 data-submit"
+      
+       >
+      <span class="mdi tf-icons mdi-content-save"></span>
+      </button>
+      <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+        <span class="mdi tf-icons mdi-close-circle-outline"></span>
+      </button>
+    </div>
+  </form>
+</div>
+</div>
+
+{% endfor %}
+
+{% comment %} delete popup {% endcomment %}
+
+<!-- Modal -->
+
+{% for user  in users %}
+  
+<div class="modal fade" id="delete_model_{{user.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'user-delete' user.id %}">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{user.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete <strong class="text-danger">{{user.email}}</strong>? This action cannot be undone.
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+
+
+
+{% endblock main_content %}
+  
+
+
+  
+
