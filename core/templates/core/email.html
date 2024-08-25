@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            background-color: #666CFF;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+            color: #fff;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content h2 {
+            color: #666CFF;
+            margin-top: 0;
+        }
+        .content p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #666CFF;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Visa Expiration Notice</h1>
+        </div>
+        <div class="content">
+            <h2>Dear {{employee.name|title}},</h2>
+            <p>We hope this message finds you well.</p>
+            <p>This is a reminder that your visa is <strong>{% if employee.visa_expired %} expired {% else %} set to expire {% endif %} </strong> on <strong>{{employee.expiry_date|date}}</strong>.</p>
+            <p><strong>Next Steps:</strong></p>
+            <ul>
+                <li>Please ensure that your visa is renewed as soon as possible to avoid any issues with your employment or stay in Saudi Arabia.</li>
+                <li>Contact the HR department if you need any assistance with the renewal process.</li>
+            </ul>
+            <p>If you have already taken action, please disregard this email.</p>
+            <p>Thank you for your attention to this important matter.</p>
+            <button type="button" href="#" class="button">Contact HR</button>
+        </div>
+        <div class="footer">
+            <p>Best regards,<br>
+            Swat Musassa<br>
+            03150575122</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+
+
+{% block main_content %}
+<div class="container-xxl flex-grow-1 container-p-y" >
+  <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span>Recycle Bin</h4>
+  <div class="row">
+    
+    <div class="col-lg-12">
+      <div class="card mb-4">
+        <div class="card-header p-0">
+          <div class="nav-align-top">
+            <ul class="nav nav-tabs nav-fill" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link waves-effect {% if request.GET.tab == 'employees' %} show active {% endif %} " role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-employees" aria-controls="navs-justified-employees" aria-selected="false" tabindex="-1">
+                  <i class="menu-icon tf-icons mdi mdi-crowd"></i> Employees
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link waves-effect {% if request.GET.tab == 'employers' %} show active {% endif %}" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-employers" aria-controls="navs-justified-employers" aria-selected="false" tabindex="-1">
+                  <i class="menu-icon tf-icons mdi mdi-account-group-outline"></i> Employers (Kapil)
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button type="button" class="nav-link waves-effect {% if request.GET.tab == 'visas' %} show active {% endif %}" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-visas" aria-controls="navs-justified-visas" aria-selected="false" tabindex="-1">
+                  <i class="menu-icon tf-icons mdi mdi-card-account-details"></i> Visas
+                </button>
+              </li>
+              
+            <span class="tab-slider" style="left: 387.787px; width: 210.613px; bottom: 0px;"></span>
+          </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="tab-content p-0">
+            <div class="tab-pane fade {% if request.GET.tab == 'employees' %} show active {% endif %}" id="navs-justified-employees" role="tabpanel">
+             
+              <div class="table-responsive text-nowrap">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Iqama Number</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Delete At</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% for employe in employees %}
+                                            
+                      <tr>
+                        
+                        <td>
+                          <a href="{% url 'app:employe-detail' employe.id %}">
+                            <div class="avatar avatar-md">
+                              
+                              {% if employe.image %}
+                                  <img src="{{employe.image.url}}" alt="avatar image of employe {{emplye.name}}" class="rounded-circle pull-up">
+                              
+                                  {% else %}
+                                
+                                  {% if employe.gender == "male" %}
+                                      <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employe.name}}" class="rounded-circle">
+                                  {% else %}
+                                    <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employe.name}}" class="rounded-circle">
+            
+                                  {% endif %}
+                                  {% endif %}
+                            </div>
+                            </a>
+                        </td>
+                        <td>{{employe.name|title }}</td>
+                        <td>{{employe.cnic}}</td>
+                        <td>{{employe.phone}}</td>
+                        <td>
+                          <span class="badge rounded-pill bg-label-primary me-1">
+                            {% if not visa.active %}
+                              Deleted
+                            {% endif %}
+                          </span>
+                        </td>
+                        <td>{{employe.update_at|timesince }}</td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="mdi mdi-dots-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item waves-effect" href="{% url 'app:employe-activate' employe.id %}"><i class="mdi mdi-recycle me-1"></i> Restore</a>
+                              <button class="dropdown-item waves-effect" data-bs-toggle="modal" data-bs-target="#delete_model_{{employe.id}}"><i class="mdi mdi-trash-can-outline me-1"></i> Delete</button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+            <div class="tab-pane fade {% if request.GET.tab == 'employers' %} show active {% endif %}" id="navs-justified-employers" role="tabpanel">
+              <div class="table-responsive text-nowrap">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Iqama Number</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Delete At</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% for employer in employers %}
+                                            
+                      <tr>
+                        
+                        <td>
+                          <a href="{% url 'app:saudi-kapil-detail' employer.id %}">
+                            <div class="avatar avatar-md">
+                              
+                              {% if employer.image %}
+                                  <img src="{{employer.image.url}}" alt="avatar image of employe {{employer.name}}" class="rounded-circle pull-up">
+                              
+                                  {% else %}
+                                
+                                  {% if employer.gender == "male" %}
+                                      <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employer.name}}" class="rounded-circle">
+                                  {% else %}
+                                    <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employe.name}}" class="rounded-circle">
+            
+                                  {% endif %}
+                                  {% endif %}
+                            </div>
+                            </a>
+                        </td>
+                        <td>{{employer.name|title }}</td>
+                        <td>{{employer.cnic}}</td>
+                        <td>{{employer.phone}}</td>
+                        <td>
+                          <span class="badge rounded-pill bg-label-primary me-1">
+                            {% if not visa.active %}
+                              Deleted
+                            {% endif %}
+                          </span>
+                        </td>
+                        <td>{{employer.update_at|timesince }}</td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="mdi mdi-dots-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item waves-effect" href="{% url 'app:saudi-kapil-activate' employer.id %}"><i class="mdi mdi-recycle me-1"></i> Restore</a>
+                              <button class="dropdown-item waves-effect" data-bs-toggle="modal" data-bs-target="#delete_model_{{employer.id}}"><i class="mdi mdi-trash-can-outline me-1"></i> Delete</button>
+                              
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+              
+            </div>
+
+            <div class="tab-pane fade {% if request.GET.tab == 'visas' %} show active {% endif %}" id="navs-justified-visas" role="tabpanel">
+              <div class="table-responsive text-nowrap">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Visa</th>
+                      <th>Status</th>
+                      <th>Delete At</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% for visa in visas %}
+                                            
+                      <tr>
+                        <td></td>
+                       
+                        <td>{{visa.name|title }}</td>
+                        <td>
+                          <span class="badge rounded-pill bg-label-primary me-1">
+                            
+                            {% if not visa.active %}
+                              Deleted
+                            {% endif %}
+                              
+                          </span>
+                        </td>
+                        <td>{{visa.update_at|timesince }}</td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="mdi mdi-dots-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item waves-effect" href="{% url 'core:visa-type-activate' visa.id %}"><i class="mdi mdi-recycle me-1"></i> Restore</a>
+                              <button class="dropdown-item waves-effect" data-bs-toggle="modal" data-bs-target="#delete_model_{{visa.id}}"><i class="mdi mdi-trash-can-outline me-1"></i> Delete</button>
+                              
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+{% for employe  in employees %}
+  
+<div class="modal fade" id="delete_model_{{employe.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'app:employe-delete' employe.id %}?redirect_page=recycle_bin">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{employe.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete <strong class="text-danger">{{employe.name}}</strong>?  This action cannot be undone.
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+{% for kapil  in employers %}
+  
+<div class="modal fade" id="delete_model_{{kapil.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'app:saudi-kapil-delete' kapil.id %}?redirect_page=recycle_bin">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{kapil.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete <strong class="text-danger">{{kapil.name}}</strong>? This action cannot be undone..
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+
+
+{% for visa_type  in visas %}
+  
+<div class="modal fade" id="delete_model_{{visa_type.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'core:visa-type-delete' visa_type.id %}?redirect_page=recycle_bin">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{visa_type.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete <strong class="text-danger">{{visa_type.name}}</strong>?  This action cannot be undone..
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock main_content %}
+    

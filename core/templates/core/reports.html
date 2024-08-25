@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% block main_content %}
+<div class="container-xxl flex-grow-1 container-p-y" >
+  <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span>Reports</h4>
+  <div class="row">
+    
+    <div class="col-lg-12">
+      <div class="card mb-4">
+       
+        <div class="card-body">
+          
+            <div class="row h-100 ">
+                <div class="col-md-3 ">
+                    <div class="card h-100">
+                        <div class="card-header">Expired Visas</div>
+                        <div class="card-body">
+                          <p class="text">
+                            Here is a list of visas that have expired.
+                          </p>
+                          <a href="{% url 'app:visa-reports' %}?expire=true" class="btn btn-md btn-primary waves-effect waves-light">View</a>
+                          
+                        </div>
+                        
+                      </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card h-100">
+                        <div class="card-header">List of Visas Expiring This Month</div>
+                        <div class="card-body">
+                          
+                          <p class="text">
+                            Review the visas set to expire in next 30 days..
+                          </p>
+                          <a href="{% url 'app:visa-reports' %}?month=true" class="btn btn-md btn-primary waves-effect waves-light">View</a>
+                        </div>
+                        
+                      </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card ">
+                        <div class="card-header">List of Visas Expiring or Expired Within the Given Date Range</div>
+                        <div class="card-body">
+                          
+                          <form action="{% url 'app:visa-reports' %}?range=true" method="get">
+
+                            <input type="hidden" name="range" value="true">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-floating form-floating-outline mb-4 ">
+                                        <input type="text" name="s" class="form-control date-mask" placeholder="YYYY-MM-DD" required="" id="id_issue_date">
+                                        <label for="id_issue_date">From date*</label>
+                                    </div>
+                                </div>
+                               <div class="col-6">
+                                <div class="form-floating form-floating-outline mb-4 ">
+                                    <input type="text" name="e" class="form-control date-mask" placeholder="YYYY-MM-DD" required="" id="id_expiry_date">
+                                    <label for="id_name">To date*</label>
+                                </div>
+                               </div>
+                            </div>
+
+                              <button type="submit" class="btn btn-md btn-primary waves-effect waves-light">View</button>
+                          </form>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock main_content %}
+    

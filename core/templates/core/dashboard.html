@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% block main_content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Home /</span> Dashboard</h4>
+    
+    <!-- Card Border Shadow -->
+    <div class="row">
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="card card-border-shadow-primary h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2 pb-1">
+              <div class="avatar me-2">
+                <span class="avatar-initial rounded bg-label-primary"
+                  >
+                  👥
+                </span>
+              </div>
+              <h4 class="ms-1 mb-0 display-6">{{count_emp}}</h4>
+            </div>
+            <p class="mb-0 text-heading">Number of Employees</p>
+            <p class="mb-0">
+              <small class="text-muted">Exclude deleted</small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="card card-border-shadow-warning h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2 pb-1">
+              <div class="avatar me-2">
+                <span class="avatar-initial rounded bg-label-warning">
+                  🤝 
+                </span>
+              </div>
+              <h4 class="ms-1 mb-0 display-6">{{count_employer}}</h4>
+            </div>
+            <p class="mb-0 text-heading">Number of Employers</p>
+            <p class="mb-0">
+              <small class="text-muted">(Kapil)</small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="card card-border-shadow-danger h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2 pb-1">
+              <div class="avatar me-2">
+                <span class="avatar-initial rounded bg-label-danger">
+                  ⚠️
+                </span>
+              </div>
+              <h4 class="ms-1 mb-0 display-6">{{visas_expire_in_week.count}}</h4>
+            </div>
+            <p class="mb-0 text-heading">The number of visas set to expire next 7 days.</p>
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="card card-border-shadow-info h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2 pb-1">
+              <div class="avatar me-2">
+                <span class="avatar-initial rounded bg-label-danger"
+          >📅
+                </span>
+              </div>
+              <h4 class="ms-1 mb-0 display-6">{{visas_expire_in_month.count}}</h4>
+            </div>
+            <p class="mb-0 text-heading">The number of visas set to expire in next 30 days.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-8 col-md-8">
+        <div class="card h-100" style="max-height: 484px; overflow-y: auto;">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="card-title m-0 me-2">Expiring Visas</h5>
+            <div class="dropdown">
+              <button class="btn p-0" type="button" id="paymentHistory" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="mdi mdi-dots-vertical mdi-24px"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="paymentHistory">
+                <a class="dropdown-item waves-effect" href="{% url 'app:visa-reports' %}?month=true" target="_blank">Print</a>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive text-nowrap">
+            <table class="table table-borderless">
+              <thead class="border-bottom">
+                <tr>
+                  <th class="text-capitalize text-body fw-medium fs-6">Employee</th>
+                  <th class="text-capitalize text-body fw-medium fs-6">issue Date</th>
+                  <th class="text-capitalize text-body fw-medium fs-6">expiry date</th>
+                  <th class="text-capitalize text-body fw-medium fs-6 text-center">status</th>
+                  <th class="text-capitalize text-body fw-medium fs-6">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              
+              {% for employe in  visas_expire_in_month %}
+                
+              <tr>
+                <td class="d-flex pt-3">
+                  <div class="px-2  d-flex align-items-center h-px-30">
+                    
+                    <div class="avatar avatar-md">
+                      <a href="{% url 'app:employe-detail' employe.id %}">
+                      {% if employe.image %}
+                          <img src="{{employe.image.url}}" alt="avatar image of employe {{emplye.name}}" class="rounded-circle pull-up">
+                      
+                          {% else %}
+                        
+                          {% if employe.gender == "male" %}
+                              <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employe.name}}" class="rounded-circle pull-up">
+                          {% else %}
+                            <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employe.name}}" class="rounded-circle  pull-up">
+    
+                          {% endif %}
+                          {% endif %}
+                      </a>
+                        </div>
+                      
+                  </div>
+                  <div class="ms-3">
+                    <h6 class="mb-0">{{employe.cnic}}</h6>
+                    <small>{{employe.name}}</small>
+                  </div>
+                </td>
+                <td class="small pt-3">{{employe.issue_date|date:"Y-m-d" }}</td>
+                <td class="small pt-3">{{employe.expiry_date|date:"Y-m-d" }}</td>
+               
+                <td class=" pt-3">
+                  <span class="badge bg-label-{{employe.expiry_date|get_badge_class}}">
+                  {% if employe.visa_expired %}
+                    Expired
+                    {% else %}
+                    {{employe.expiry_date|timeuntil }} remain
+                  {% endif %}
+                  </span>
+                </td>
+                <td class="small pt-3">
+                  
+              {% comment %} style for email indicator {% endcomment %}
+
+                <style>
+                  #email-indicator-{{employe.id}}{
+                    display:none;
+                  }
+                 
+                  .htmx-request#email-indicator-{{employe.id}}{
+                    display:flex;
+                  }
+                  .htmx-request#email-indicator-{{employe.id}} ~ #email_button{
+                    display: none;
+                  }
+                </style>
+              {% comment %} /style for email indicator {% endcomment %}
+
+
+                  <button type="button" hx-get="{% url 'core:send-email' employe.id %}"
+                  hx-trigger="click" hx-target="#notification-container"
+                  hx-swap="innerHTML" hx-indicator="#email-indicator-{{employe.id}}"
+                  data-bs-toggle="tooltip" data-bs-placement="top"
+                   data-bs-original-title="send email to {{employe.name}}"
+                  class="btn rounded-pill btn-icon btn-outline-primary waves-effect">
+                  
+                  <div class="sk-swing sk-primary " id="email-indicator-{{employe.id}}">
+                    <div class="sk-swing-dot"></div>
+                    <div class="sk-swing-dot"></div>
+                  </div>
+                  <span class="tf-icons mdi  mdi-email-outline mdi-20px " id="email_button"></span>
+                  
+                </button>
+                
+                <a target="_blank" class="btn rounded-pill btn-icon btn-outline-info waves-effect" href="{% url 'app:employee_report' employe.id %}">
+                  
+                  <span class="tf-icons mdi  mdi-printer-outline mdi-20px " id="email_button"></span>
+
+                  </a>
+                </td>
+              </tr>
+
+
+              {% endfor %}
+                
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Shipment statistics-->
+      <div class="col-lg-4 col-xxl-4 mb-4 order-3 order-xxl-1 gap-2 d-flex flex-column mt-sm-2 mt-md-0">
+        <div class="card">
+          <div class="card-header pb-1">
+            <div class="d-flex justify-content-between">
+              <h5 class="mb-1">Visa Overview</h5>
+              
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="deliveryExceptionsChart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{chart_data|safe|json_script:"chart_data" }}
+  </div>
+{% endblock main_content %}
+    

@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+
+{% block main_content %}
+
+<div class="container-xxl flex-grow-1 container-p-y" >
+    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Visa Type </h4>
+    <div class="card">
+      
+     {% comment %} search form {% endcomment %}
+      <div class="d-flex justify-content-between mb-4">
+        <form action="" method="get">
+            
+          <div class="text-start p-2 d-flex gap-2">
+              <input type="search"  class="form-control" name="name" id="" placeholder="Search by name">
+              
+            </div>
+        </form>
+          <div class=" text-end p-2">
+            <button type="button" 
+            data-bs-target="#add_offcanvas"
+            data-bs-toggle="offcanvas"
+            class="btn btn-primary waves-effect waves-light">
+            <span class="tf-icons mdi mdi-plus-circle"></span>
+          </button>
+          </div>
+      </div>
+      {% comment %} /search form {% endcomment %}
+      <div class="table-responsive text-nowrap">
+        <table class="table">
+          <thead>
+            <tr class="text-nowrap">
+              <th>#</th>
+              <th>Visa</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            
+            {% for visa_type in visatypes %}
+              
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{visa_type.name}}</td>
+              <td>
+                <button type="button" 
+                data-bs-target="#edit_offcanvas_{{visa_type.id}}"
+                data-bs-toggle="offcanvas"
+                class="btn btn-icon btn-outline-primary waves-effect">
+                    <span class="tf-icons mdi mdi-square-edit-outline"></span>
+                  </button>
+                <button type="button" 
+                data-bs-target="#delete_model_{{visa_type.id}}"
+                data-bs-toggle="modal"
+                class="btn btn-icon btn-outline-danger waves-effect">
+                    <span class="tf-icons mdi mdi-delete-outline"></span>
+                </button>
+              </td>
+            </tr>
+            {% empty %}
+              <tr>
+                <td  colspan="3">
+                  <p class="text-center">No records found.</p></td>
+                
+              </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+      {% comment %} Pagination {% endcomment %}
+      {% include 'includes/pagination.html' %}
+    </div>
+  </div>
+  
+
+
+    <!-- Offcanvas to add new record -->
+    <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="add_offcanvas"
+    aria-labelledby="add_offcanvasLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 id="add_offcanvasLabel" class="offcanvas-title">Add Visa Type</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-0 flex-grow-0">
+      <form   method="post"  class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="ecommerce-customer-add-basic mb-4 ">
+          <div class="form-floating form-floating-outline mb-4 ">
+            {{form.name}}
+            <label for="id_name">Name*</label>
+            <div class="invalid-feedback">this field is required</div>
+          </div>
+
+         
+        </div>
+       
+        <div class="pt-3">
+          <button type="submit" 
+           
+            class="btn btn-primary me-sm-3 me-1 data-submit"
+          
+           >
+          <span class="mdi tf-icons mdi-content-save"></span>
+          </button>
+          <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+            <span class="mdi tf-icons mdi-close-circle-outline"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+ 
+<!-- Offcanvas to update the record -->
+
+{% for visa_type  in visatypes %}
+  
+<div
+class="offcanvas offcanvas-end"
+tabindex="-1"
+id="edit_offcanvas_{{visa_type.id}}"
+aria-labelledby="edit_offcanvasLabel_{{visa_type.id}}">
+<div class="offcanvas-header border-bottom">
+  <h5 id="edit_offcanvasLabel_{{visa_type.id}}" class="offcanvas-title">Edit Visa</h5>
+  <button
+    type="button"
+    class="btn-close text-reset"
+    data-bs-dismiss="offcanvas"
+    aria-label="Close"></button>
+</div>
+<div class="offcanvas-body mx-0 flex-grow-0">
+  <form  action="{% url 'core:visa-type-update' visa_type.id %}" method="post"  class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="ecommerce-customer-add-basic mb-4 ">
+      <div class="form-floating form-floating-outline mb-4 ">
+        <input
+          type="text"
+          class="form-control"
+          id="id_name_edit_{{visa_type.id}}"
+          placeholder="visa name"
+          name="name"
+          value="{{visa_type.name}}"
+          aria-label="name" />
+        <label for="id_name_edit_{{visa_type.id}}">Name*</label>
+        <div class="invalid-feedback">this field is required</div>
+      </div>
+
+     
+    </div>
+    <div class="pt-3">
+      <button type="submit" 
+       
+        class="btn btn-primary me-sm-3 me-1 data-submit"
+      
+       >
+      <span class="mdi tf-icons mdi-content-save"></span>
+      </button>
+      <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">
+        <span class="mdi tf-icons mdi-close-circle-outline"></span>
+      </button>
+    </div>
+  </form>
+</div>
+</div>
+
+{% endfor %}
+
+{% comment %} delete popup {% endcomment %}
+
+<!-- Modal -->
+
+{% for visa_type  in visatypes %}
+  
+<div class="modal fade" id="delete_model_{{visa_type.id}}" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form class="modal-content" method="post" action="{% url 'core:visa-type-deactivate' visa_type.id %}">
+      {% csrf_token %}
+      <div class="modal-header">
+        <h4 class="modal-title" id="delete_model_title_{{visa_type.id}}">Delete Record Confirmation</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col mb-4 mt-2">
+            <p>
+              Are you sure you want to delete <strong class="text-danger">{{visa_type.name}}</strong>?  You can undo it from the Recycle Bin.
+            </p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+
+
+
+{% endblock main_content %}
+  
+
