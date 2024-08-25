@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+{% load static %}
+<html
+  lang="en"
+  class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="{% static '/assets/' %}"
+  data-template="vertical-menu-template">
+
+  <!-- include head -->
+ {% include 'includes/head.html' %}
+  
+  {% block style %}
+    
+  {% endblock style %}
+    
+ 
+  <body>
+    <!-- Layout wrapper -->
+    
+    {% block body %}
+    
+      
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'includes/side_menu.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          {% include 'includes/nav.html' %}
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            
+            {% block main_content %}
+              
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 mb-4"><span class="text-muted fw-light">eCommerce /</span> All Customers</h4>
+
+              <!-- customers List Table -->
+              <div class="card">
+               {% comment %} search form {% endcomment %}
+                <div class="d-flex justify-content-between mb-4">
+                  <form action="" method="get">
+                    <div class="text-start p-2 d-flex gap-2">
+                        <input type="search"  class="form-control" name="query" id="" placeholder="search by name">
+                        <button type="button" class="btn btn-icon btn-label-primary waves-effect">
+                          <span class="tf-icons mdi mdi-checkbox-marked-circle-outline"></span>
+                        </button>
+                      </div>
+                    </form>
+                    <div class=" text-end p-2">
+                      <button type="button" class="btn btn-primary waves-effect waves-light">Primary</button>
+                    </div>
+                </div>
+                {% comment %} /search form {% endcomment %}
+                <div class="table-responsive text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr class="text-nowrap">
+                        <th>#</th>
+                        <th>Table heading</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>Table cell</td>
+                        
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+                <div class="text-end mt-2">
+                  <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-end">
+                      <li class="page-item prev">
+                        <a class="page-link waves-effect" href="#"><i class="tf-icon mdi mdi-chevron-double-left"></i></a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link waves-effect" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link waves-effect" href="#">2</a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link waves-effect" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link waves-effect" href="#">4</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link waves-effect" href="#">5</a>
+                      </li>
+                      <li class="page-item next">
+                        <a class="page-link waves-effect" href="#"><i class="tf-icon mdi mdi-chevron-double-right"></i></a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            
+
+            {% endblock main_content %}
+            
+            <!-- Offcanvas to add new customer -->
+          <div
+            class="offcanvas offcanvas-end"
+            tabindex="-1"
+            id="offcanvasEcommerceCustomerAdd"
+            aria-labelledby="offcanvasEcommerceCustomerAddLabel">
+            <div class="offcanvas-header border-bottom">
+              <h5 id="offcanvasEcommerceCustomerAddLabel" class="offcanvas-title">Add Customer</h5>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body mx-0 flex-grow-0">
+              <form class="ecommerce-customer-add pt-0" id="eCommerceCustomerAddForm" onsubmit="return false">
+                <div class="ecommerce-customer-add-basic mb-4">
+                  <h6 class="mb-4">Basic Information</h6>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="ecommerce-customer-add-name"
+                      placeholder="John Doe"
+                      name="customerName"
+                      aria-label="John Doe" />
+                    <label for="ecommerce-customer-add-name">Name*</label>
+                  </div>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-email"
+                      class="form-control"
+                      placeholder="john.doe@example.com"
+                      aria-label="john.doe@example.com"
+                      name="customerEmail" />
+                    <label for="ecommerce-customer-add-email">Email*</label>
+                  </div>
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-contact"
+                      class="form-control phone-mask"
+                      placeholder="+(123) 456-7890"
+                      aria-label="+(123) 456-7890"
+                      name="customerContact" />
+                    <label for="ecommerce-customer-add-contact">Mobile</label>
+                  </div>
+                </div>
+                <div class="ecommerce-customer-add-shiping mb-3">
+                  <h6 class="mb-4">Shipping Information</h6>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-address"
+                      class="form-control"
+                      placeholder="45 Roker Terrace"
+                      aria-label="45 Roker Terrace"
+                      name="customerAddress1" />
+                    <label for="ecommerce-customer-add-address">Address Line 1</label>
+                  </div>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-address-2"
+                      class="form-control"
+                      placeholder="Address 2"
+                      aria-label="address2"
+                      name="customerAddress2" />
+                    <label for="ecommerce-customer-add-address-2">Address Line 2</label>
+                  </div>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-town"
+                      class="form-control"
+                      placeholder="New York"
+                      aria-label="New York"
+                      name="customerTown" />
+                    <label for="ecommerce-customer-add-town">Town</label>
+                  </div>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-state"
+                      class="form-control"
+                      placeholder="Southern tip"
+                      aria-label="Southern tip"
+                      name="customerState" />
+                    <label for="ecommerce-customer-add-state">State / Province</label>
+                  </div>
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input
+                      type="text"
+                      id="ecommerce-customer-add-post-code"
+                      class="form-control"
+                      placeholder="734990"
+                      aria-label="734990"
+                      name="pin"
+                      pattern="[0-9]{8}"
+                      maxlength="8" />
+                    <label for="ecommerce-customer-add-post-code">Post Code</label>
+                  </div>
+                  <div class="form-floating form-floating-outline">
+                    <select id="ecommerce-customer-add-country" class="select2 form-select">
+                      <option value="">Select</option>
+                      <option value="Australia">Australia</option>
+                      <option value="Bangladesh">Bangladesh</option>
+                      <option value="Belarus">Belarus</option>
+                      <option value="Brazil">Brazil</option>
+                      <option value="Canada">Canada</option>
+                      <option value="China">China</option>
+                      <option value="France">France</option>
+                      <option value="Germany">Germany</option>
+                      <option value="India">India</option>
+                      <option value="Indonesia">Indonesia</option>
+                      <option value="Israel">Israel</option>
+                      <option value="Italy">Italy</option>
+                      <option value="Japan">Japan</option>
+                      <option value="Korea">Korea, Republic of</option>
+                      <option value="Mexico">Mexico</option>
+                      <option value="Philippines">Philippines</option>
+                      <option value="Russia">Russian Federation</option>
+                      <option value="South Africa">South Africa</option>
+                      <option value="Thailand">Thailand</option>
+                      <option value="Turkey">Turkey</option>
+                      <option value="Ukraine">Ukraine</option>
+                      <option value="United Arab Emirates">United Arab Emirates</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                      <option value="United States">United States</option>
+                    </select>
+                    <label for="ecommerce-customer-add-country">Country</label>
+                  </div>
+                </div>
+                <div class="d-sm-flex mb-3 pt-3">
+                  <div class="me-auto mb-2 mb-md-0">
+                    <h6 class="mb-0">Use as a billing address?</h6>
+                    <small class="text-muted">If you need more info, please check budget.</small>
+                  </div>
+                  <label class="switch m-auto pe-2">
+                    <input type="checkbox" class="switch-input" />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on"></span>
+                      <span class="switch-off"></span>
+                    </span>
+                  </label>
+                </div>
+                <div class="pt-3">
+                  <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Add</button>
+                  <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">Discard</button>
+                </div>
+              </form>
+            </div>
+          </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+      <div class="drag-target"></div>
+    </div>
+    <!-- / Layout wrapper -->
+    
+    {% endblock body %}
+    {% include 'includes/footer.html' %}
+    
+    {% block script %}
+      
+    {% endblock script %}
+      
+  </body>
+</html>

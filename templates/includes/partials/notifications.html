@@ -1,0 +1,87 @@
+
+{% load static %}
+
+{% include 'includes/messages.html' %}
+
+
+<li class="dropdown-menu-header border-bottom">
+    <div class="dropdown-header d-flex align-items-center py-3">
+    <h6 class="mb-0 me-auto">{% if emails.count %} Today's sent emails.
+         {% else %} Visas set to expire today.
+        {% endif %}</h6>
+    <span class="badge rounded-pill bg-label-primary">{% if emails.count %}{{emails.count}} {% else %} {{employees.count}} {% endif %}</span>
+    </div>
+</li>
+<li class="dropdown-notifications-list scrollable-container">
+    <ul class="list-group list-group-flush">
+    {% for email in emails %}
+        <li class="list-group-item list-group-item-action dropdown-notifications-item">
+            <div class="d-flex gap-2">
+            <div class="flex-shrink-0">
+                <div class="avatar me-1">
+
+                {% if email.employe.image %}
+                <img src="{{email.employe.image.url}}" alt="avatar image of employe {{email.emplye.name}}" class="w-px-40 h-auto rounded-circle">
+            
+                {% else %}
+            
+                {% if email.employe.gender == "male" %}
+                    <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{email.employe.name}}" class="w-px-40 h-auto rounded-circle">
+                {% else %}
+                <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{email.employe.name}}" class="w-px-40 h-auto rounded-circle">
+
+                {% endif %}
+                {% endif %}
+
+
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-200">
+                <h6 class="mb-1 text-truncate">{{email.employe.name}}</h6>
+                <small class="text-truncate text-body">
+                    {{email.employe.cnic}}
+                </small>
+            </div>
+            <div class="flex-shrink-0 dropdown-notifications-actions">
+                <small class="text-muted">{{email.created_at|timesince }} ago</small>
+            </div>
+            </div>
+        </li>
+    {% empty %}
+        {% for employe in employees %}
+            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                <div class="d-flex gap-2">
+                <div class="flex-shrink-0">
+                    <div class="avatar me-1">
+
+                    {% if employe.image %}
+                    <img src="{{employe.image.url}}" alt="avatar image of employe {{emplye.name}}" class="w-px-40 h-auto rounded-circle">
+                
+                    {% else %}
+                
+                    {% if employe.gender == "male" %}
+                        <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employe.name}}" class="w-px-40 h-auto rounded-circle">
+                    {% else %}
+                    <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{email.employe.name}}" class="w-px-40 h-auto rounded-circle">
+
+                    {% endif %}
+                    {% endif %}
+
+
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-grow-1 overflow-hidden w-px-200">
+                    <h6 class="mb-1 text-truncate">{{employe.name}}</h6>
+                    <small class="text-truncate text-body">
+                        {{employe.cnic}}
+                    </small>
+                </div>
+                <div class="flex-shrink-0 dropdown-notifications-actions">
+                    <small class="text-muted">{% if employe.visa_expired %}Expired {% else %} {{employe.expire_date|timeuntil}} {% endif %}</small>
+                </div>
+                </div>
+            </li>
+        {% endfor %}
+    {% endfor %}
+    </ul>
+</li>

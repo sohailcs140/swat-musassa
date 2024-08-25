@@ -1,0 +1,64 @@
+{% load static %}  
+
+    <script src="{% static 'assets/js/custome.js' %}"></script>
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/popper/popper.js' %}"></script>
+    <script src="{% static 'assets/vendor/js/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/node-waves/node-waves.js' %}"></script>
+    {% comment %} <script src="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script> {% endcomment %}
+    <script src="{% static 'assets/vendor/libs/hammer/hammer.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/i18n/i18n.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/typeahead-js/typeahead.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/bloodhound/bloodhound.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/apex-charts/apexcharts.js' %}"></script>
+    <script src="{% static 'assets/vendor/js/menu.js' %}"></script> 
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    
+ <script src="{% static 'assets/vendor/libs/swiper/swiper.js' %}"></script>
+
+        <!-- Vendors JS -->
+    <script src="{% static 'assets/vendor/libs/moment/moment.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/select2/select2.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/@form-validation/umd/bundle/popular.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/cleavejs/cleave.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/cleavejs/cleave-phone.js' %}"></script> 
+
+    <script src="{% static 'assets/vendor/libs/toastr/toastr.js' %}"></script> 
+    
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/formvalidation.js' %}"></script>
+    <script src="{% static 'assets/js/form-extras.js' %}"></script>
+    <script src="{% static 'assets/js/form-select.js' %}"></script>
+    <!-- Page JS -->
+    {% block script %} <script src="{% static 'assets/js/pages-auth.js' %}"></script> {% endblock script %}
+     {% comment %} <script src="{% static 'assets/js/app-ecommerce-customer-all.js' %}"></script>  {% endcomment %}
+    
+    {% include 'includes/messages.html' %}
+    
+    <script src="{% static 'assets/js/dashboard.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/shepherd/shepherd.js' %}"></script>
+    <script src="{% static 'assets/js/tour.js' %}"></script>
+    <script src="{% static 'assets/js/typeahead.js' %}"></script>
+
+
+<script>
+    document.getElementById('filterForm').addEventListener('submit', function(e) {
+        var elements = this.elements;      
+        for (var i = elements.length - 1; i >= 0; i--) {
+            if (elements[i].value === '') {
+                elements[i].name = '';
+            }
+        }
+    });
+
+    
+</script>
+    
+   

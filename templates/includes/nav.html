@@ -1,0 +1,260 @@
+{% load static %}
+{% load app_tags %}
+<nav
+class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+id="layout-navbar">
+<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+  <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+    <i class="mdi mdi-menu mdi-24px"></i>
+  </a>
+</div>
+
+<div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+  <!-- Search -->
+  <div class="navbar-nav align-items-center">
+    <div class="nav-item navbar-search-wrapper mb-0">
+      <a class="nav-item nav-link search-toggler fw-normal px-0" href="javascript:void(0);">
+        <i class="mdi mdi-magnify mdi-24px scaleX-n1-rtl"></i>
+        <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
+      </a>
+    </div>
+  </div>
+  <!-- /Search -->
+
+  <ul class="navbar-nav flex-row align-items-center ms-auto">
+   
+    <!--/ Language -->
+
+    <!-- Style Switcher -->
+    <li class="nav-item dropdown-style-switcher dropdown me-1 me-xl-0">
+      <a
+        class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
+        href="javascript:void(0);"
+        data-bs-toggle="dropdown">
+        <i class="mdi mdi-24px"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
+            <span class="align-middle"><i class="mdi mdi-weather-sunny me-2"></i>Light</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
+            <span class="align-middle"><i class="mdi mdi-weather-night me-2"></i>Dark</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
+            <span class="align-middle"><i class="mdi mdi-monitor me-2"></i>System</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <!-- / Style Switcher-->
+
+    <!-- Quick links  -->
+    <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-1 me-xl-0">
+      <a
+        class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
+        href="javascript:void(0);"
+        data-bs-toggle="dropdown"
+        data-bs-auto-close="outside"
+        aria-expanded="false">
+        <i class="mdi mdi-view-grid-plus-outline mdi-24px"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-end py-0">
+        <div class="dropdown-menu-header border-bottom">
+          <div class="dropdown-header d-flex align-items-center py-3">
+            <h5 class="text-body mb-0 me-auto">Shortcuts</h5>
+            <a
+              href="javascript:void(0)"
+              class="dropdown-shortcuts-add text-muted"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Add shortcuts"
+              ><i class="mdi mdi-view-grid-plus-outline mdi-24px"></i
+            ></a>
+          </div>
+        </div>
+        <div class="dropdown-shortcuts-list scrollable-container">
+          <div class="row row-bordered overflow-visible g-0">
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-card-account-details fs-4"></i>
+              </span>
+              <a href="{% url 'app:visa-renew' %}" class="stretched-link">Renew Visa</a>
+              <small class="text-muted mb-0">Renew</small>
+            </div>
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-file-document-outline fs-4"></i>
+              </span>
+              <a href="{% url 'app:visa-reports' %}" class="stretched-link">Reports</a>
+              <small class="text-muted mb-0">Visa Reports</small>
+            </div>
+          </div>
+          <div class="row row-bordered overflow-visible g-0">
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-account-group-outline fs-4"></i>
+              </span>
+              <a href="{% url 'app:saudi-kapil-create-list' %}" class="stretched-link">Employers</a>
+              <small class="text-muted mb-0">Manage Kapil</small>
+            </div>
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-crowd fs-4"></i>
+              </span>
+              <a href="{% url 'app:employe-create-list' %}" class="stretched-link">Employees</a>
+              <small class="text-muted mb-0">Manage Employees</small>
+            </div>
+          </div>
+          <div class="row row-bordered overflow-visible g-0">
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-chart-pie-outline fs-4"></i>
+              </span>
+              <a href="/" class="stretched-link">Dashboard</a>
+              <small class="text-muted mb-0">Overview</small>
+            </div>
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-recycle-variant fs-4"></i>
+              </span>
+              <a href="{% url 'core:recycle-bin' %}?tab=employees" class="stretched-link">Recycle Bin</a>
+              <small class="text-muted mb-0">Restore deleted items.</small>
+            </div>
+          </div>
+          <div class="row row-bordered overflow-visible g-0">
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-help-circle-outline fs-4"></i>
+              </span>
+              <a href="pages-faq.html" class="stretched-link">FAQs</a>
+              <small class="text-muted mb-0">FAQs & Articles</small>
+            </div>
+            <div class="dropdown-shortcuts-item col">
+              <span class="dropdown-shortcuts-icon bg-label-secondary rounded-circle mb-2">
+                <i class="mdi mdi-dock-window fs-4"></i>
+              </span>
+              <a href="modal-examples.html" class="stretched-link">Modals</a>
+              <small class="text-muted mb-0">Useful Popups</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <!-- Quick links -->
+
+    <!-- Notification -->
+    <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
+       <a
+        class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
+        href="javascript:void(0);"
+        data-bs-toggle="dropdown"
+        data-bs-auto-close="outside"
+        aria-expanded="false">
+        {% comment %}  {% endcomment %}
+        <div class="sk-wave sk-primary emails_indicator" 
+        id="emails_progress"
+        data-toggle="tooltip" data-placement="bottom" title="Checking and sending emails."
+        >
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+        </div>
+        <i class="mdi mdi-bell-outline mdi-24px notification-icon"></i>
+      </a> 
+
+      
+      {% comment %} notification list {% endcomment %}
+      <ul class="dropdown-menu dropdown-menu-end py-0" 
+      id="notification-container" hx-post="{% url 'core:send-emails' %}" 
+      hx-target="#notification-container" hx-swap="innerHTML" hx-trigger="load"
+      hx-indicator="#emails_progress"
+      >
+      <li class="list-group-item list-group-item-action dropdown-notifications-item">
+        {% get_track_emails as emails %}
+        {% today_expire as employees %}
+        {% include 'includes/partials/notifications.html' with emails=emails employees=employees%}
+      </li>
+      </ul>
+    </li>
+    <!--/ Notification -->
+
+    <!-- User -->
+    <li class="nav-item navbar-dropdown dropdown-user dropdown">
+      <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+        <div class="avatar avatar-online">
+          {% if request.user.image %}
+          <img src="{{request.user.image.url}}" alt class="w-px-40 h-auto rounded-circle" />
+        
+          {% else %}
+          <img src="{% static 'assets/img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle" />
+          
+        {% endif %}
+        </div>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" href="pages-account-settings-account.html">
+            <div class="d-flex">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar avatar-online">
+                  {% if request.user.image %}
+                    <img src="{{request.user.image.url}}" alt class="w-px-40 h-auto rounded-circle" />
+                  
+                    {% else %}
+                    <img src="{% static 'assets/img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle" />
+                    
+                  {% endif %}
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <span class="fw-medium d-block">{{request.user.get_full_name}}</span>
+                <small class="text-muted">{{request.user.email}}</small>
+              </div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <div class="dropdown-divider"></div>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{% url 'password-change' %}" >
+            <i class="mdi mdi-lock-reset me-2"></i>
+            <span class="align-middle">Change Password</span>
+          </a>
+        </li>
+        <li>
+          <div class="dropdown-divider"></div>
+        </li>
+        
+        <li>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="dropdown-item" >
+              <i class="mdi mdi-logout me-2"></i>
+              <span class="align-middle">Log Out</span>
+            </button>
+        </form>
+        </li>
+      </ul>
+    </li>
+    <!--/ User -->
+  </ul>
+</div>
+
+<!-- Search Small Screens -->
+<div class="navbar-search-wrapper search-input-wrapper d-none">
+  <input
+    type="text"
+    class="form-control search-input container-xxl border-0"
+    placeholder="Search..."
+    aria-label="Search..." />
+  <i class="mdi mdi-close search-toggler cursor-pointer"></i>
+</div>
+</nav>

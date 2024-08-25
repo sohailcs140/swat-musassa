@@ -1,0 +1,53 @@
+{% load static %}
+<script>
+
+$(document).ready(function(){
+
+    
+        $('#popover-{{employer.id}}').popover({
+            html: true,
+            title: 'Employees of {{employer.name}}',
+            placement :"left",
+            content: `
+            <div class="card-body employer-opover scroll-container">
+            <ul class="p-0 m-0">
+                {% for employe in employer.employees.all %}
+                <a href="{% url 'app:employe-detail' employe.id %}" target="_blank">
+                <li class="d-flex mb-4 pb-1">
+                
+                <div class="avatar flex-shrink-0 me-3">
+                    {% if employe.image %}
+                    <img src="{{employe.image.url}}" alt="avatar image of employe {{emplye.name}}" class="rounded">
+                
+                    {% else %}
+                  
+                    {% if employe.gender == "male" %}
+                        <img src="{% static 'assets/img/avatars/1.png' %}" alt="image of {{employe.name}}" class="rounded">
+                    {% else %}
+                      <img src="{% static 'assets/img/avatars/2.png' %}" alt="image of {{employe.name}}" class="rounded">
+
+                    {% endif %}
+                    {% endif %}
+                </div>
+                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="me-2">
+                        <h6 class="mb-0">{{employe.name}}</h6>
+                        <small>
+                            <i class="menu-icon tf-icons mdi mdi-card-account-details mdi-14px"></i>
+                            <span>{{employe.cnic}}</span>
+                        </small>
+                    </div>
+                </div>
+            </li>
+        </a>
+            {% endfor %}
+            </ul>
+            </div>
+            
+            `
+        });
+
+    
+});
+
+  </script>

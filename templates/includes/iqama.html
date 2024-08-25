@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iqama Card</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .iqama-card {
+            width: 350px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .header .logo {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+        
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #2d2d2d;
+        }
+        
+        .header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .photo {
+            width: 30%;
+        }
+        
+        .photo img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        
+        .details {
+            width: 65%;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .details p {
+            margin: 5px 0;
+        }
+        
+        .footer {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+        
+        @media print{
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f3f3;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            
+            .iqama-card {
+                width: 350px;
+                background-color: #fff;
+                border: 2px solid #ccc;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                text-align: center;
+            }
+            
+            .header {
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .header .logo {
+                width: 50px;
+                margin-bottom: 10px;
+            }
+            
+            .header h2 {
+                margin: 0;
+                font-size: 18px;
+                color: #2d2d2d;
+            }
+            
+            .header p {
+                margin: 5px 0 0;
+                font-size: 14px;
+                color: #555;
+            }
+            
+            .content {
+                display: flex;
+                justify-content: space-between;
+            }
+            
+            .photo {
+                width: 30%;
+            }
+            
+            .photo img {
+                width: 100%;
+                border-radius: 5px;
+            }
+            
+            .details {
+                width: 65%;
+                text-align: left;
+                font-size: 14px;
+            }
+            
+            .details p {
+                margin: 5px 0;
+            }
+            
+            .footer {
+                margin-top: 10px;
+                font-size: 12px;
+                color: #777;
+                border-top: 1px solid #ccc;
+                padding-top: 10px;
+            }
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div class="iqama-card" id="iqamaCard">
+        <div class="header">
+            <img src="saudi_logo.png" alt="Saudi Logo" class="logo">
+            <h2>Kingdom of Saudi Arabia</h2>
+            <p>Resident Identity Card</p>
+        </div>
+        <div class="content">
+            <div class="photo" onclick="printIqamaCard(iqamaCard)">
+                <img src="./static/assets/img/avatars/10.png" alt="User Photo">
+            </div>
+            <div class="details">
+                <p><strong>Iqama No:</strong> 1234 5678 9101 1121</p>
+                <p><strong>Name:</strong> Mohammad Ali</p>
+                <p><strong>Nationality:</strong> Pakistani</p>
+                <p><strong>Date of Birth:</strong> 01/01/1990</p>
+                <p><strong>Expiry Date:</strong> 15/08/2025</p>
+            </div>
+        </div>
+        <div class="footer">
+            <p>وزارة الداخلية - المملكة العربية السعودية</p>
+        </div>
+    </div>
+    <script>
+
+        function printIqamaCard(id) {
+            alert("ok")
+            function printDiv(divId) {
+                // Get the content of the div
+                var printContents = document.getElementById(divId).innerHTML;
+            
+                // Open a new window
+                var originalContents = document.body.innerHTML;
+                document.body.innerHTML = "<html><head><title></title></head><body>" + printContents + "</body>";
+            
+                // Print the contents
+                window.print();
+            
+                // Restore the original contents
+                document.body.innerHTML = originalContents;
+            }
+            
+            printDiv(id)
+        }
+        
+        
+    </script>
+</body>
+</html>
