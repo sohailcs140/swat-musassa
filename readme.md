@@ -1,0 +1,50 @@
+## Requirements
+
+- Python 3.x
+- Django x.x (replace with your version)
+- Other dependencies (list any other necessary libraries or services)
+
+## Installation
+
+1. **Clone the repository:**
+
+   ```
+   git clone https://github.com/yourusername/your-repository.git
+   cd your-repository 
+   
+   ```
+
+2. **Create a virtual environment:**
+
+```
+python -m venv venv
+```
+
+
+3. **Activate the virtual environment:**
+
+```
+venv\Scripts\activate
+```
+
+
+4. **install the requirements**
+
+```
+pip install -r requirements.txt
+```
+
+5. **Apply the migrations**
+
+```
+python manage.py migrate
+```
+
+
+6. **Create a superuser:**
+
+```
+python manage.py createsuperuser
+```
+
+
