@@ -2,15 +2,16 @@
 
 - Python 3.12.4
 - Django 5.1
+
 - Mariadb 11.5.2
+
 
 ## Installation
 
 1. **Clone the repository:**
 
    ```
-    https://github.com/sohailcs140/swat-musassa.git
-   
+    git clone https://github.com/sohailcs140/swat-musassa.git .
    ```
 
 2. **Create a virtual environment:**
@@ -46,6 +47,11 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+7. **Run the server**
+
+```
+python manage.py runserver
+```
 
 
 # Xampp Server Setup
