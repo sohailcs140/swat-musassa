@@ -457,7 +457,7 @@ aria-labelledby="edit_offcanvasLabel_{{employe.id}}">
       <select name="country" class="select2 form-select form-select-lg"  required="" id="id_country">
         {% for value, key in countries.items %}
 
-        <option value="{{key|lower }}" {% if key|lower == employe.country|lower %}selected{% endif %}>{{value}}</option>
+        <option value="{{value|lower }}" {% if value|lower == employe.country|lower %}selected{% endif %}>{{value}}</option>
         
         {% endfor %}
       </select>

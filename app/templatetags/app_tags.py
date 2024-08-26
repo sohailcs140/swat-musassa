@@ -43,8 +43,7 @@ def gender_badge_class(val:str):
 def get_country_name(val:str)->str:
         
     for key, value in settings.COUNTRIES_WITH_FLAGS.items():
-        
-        if value == val:
+        if key.lower() == val.lower():
             
             return key
     
