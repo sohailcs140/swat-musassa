@@ -51,3 +51,39 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+
+# Xampp Server Setup
+
+```
+
+# Django Project
+
+LoadFile "C:/Users/LAPTOP~1/AppData/Local/Programs/Python/Python312/python312.dll"
+LoadModule wsgi_module "C:/Users/LAPTOP~1/AppData/Local/Programs/Python/Python312/Lib/site-packages/mod_wsgi/server/mod_wsgi.cp312-win_amd64.pyd"
+
+# Set the Python environment home
+WSGIPythonHome "C:/Users/Laptop Valley/AppData/Roaming/Python/Python312"
+
+# Map the WSGI script alias to your Django project's wsgi.py file
+WSGIScriptAlias /test_django "C:/xampp/htdocs/testDjango/testDjango/wsgi.py"
+
+# Set the Python path for your Django project
+WSGIPythonPath "C:/xampp/htdocs/testDjango"
+
+# Directory configuration for Django project
+<Directory "C:/xampp/htdocs/testDjango/testDjango">
+    <Files wsgi.py>
+        Require all granted
+    </Files>
+</Directory>
+
+
+
+# Alias for static files
+# Alias /static/ "C:/xampp/htdocs/testDjango/static/"
+
+# Directory configuration for static files
+# <Directory "C:/xampp/htdocs/testDjango/static">
+#    Require all granted
+# </Directory>
+```
