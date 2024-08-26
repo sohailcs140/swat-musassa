@@ -3,6 +3,9 @@
 - Python 3.12.4
 - Django 5.1
 
+- Mariadb 11.5.2
+
+
 ## Installation
 
 1. **Clone the repository:**
@@ -86,4 +89,18 @@ WSGIPythonPath "C:/xampp/htdocs/testDjango"
 # <Directory "C:/xampp/htdocs/testDjango/static">
 #    Require all granted
 # </Directory>
+```
+
+## Update config.inc.php file of xampp server
+
+
+### Xampp server link
+```
+https://xampp.en.uptodown.com/windows/download
+```
+
+### Mariadb link
+
+```
+https://dlm.mariadb.com/3899624/MariaDB/mariadb-11.5.2/winx64-packages/mariadb-11.5.2-winx64.msi
 ```

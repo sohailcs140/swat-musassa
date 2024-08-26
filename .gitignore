@@ -63,6 +63,3 @@ coverage/
 
 # Ignore macOS specific files
 .DS_Store
-
-# 
-requirements.txt
