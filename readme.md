@@ -11,8 +11,7 @@
 1. **Clone the repository:**
 
    ```
-    git clone https://github.com/sohailcs140/swat-musassa.git
-   
+    git clone https://github.com/sohailcs140/swat-musassa.git .
    ```
 
 2. **Create a virtual environment:**
