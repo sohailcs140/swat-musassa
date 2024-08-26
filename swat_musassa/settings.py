@@ -79,7 +79,20 @@ WSGI_APPLICATION = 'swat_musassa.wsgi.application'
 
 
 
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydatabase',
+        'USER': 'root', 
+        'PASSWORD': 'root', 
+        'HOST': 'localhost',  
+        'PORT': '3306',  
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
+    }
+}
 
 
 # Password validation

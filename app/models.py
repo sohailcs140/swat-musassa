@@ -6,7 +6,7 @@ from django.conf import settings
 from core.managers import DefaultModelManager, CustomeModelManager, AllObjectModelManager
 
 
-COUNTRY_CHOICES = [(key.lower(), value) for value, key in settings.COUNTRIES_WITH_FLAGS.items()]
+COUNTRY_CHOICES = [(value.lower(), value) for value, key in settings.COUNTRIES_WITH_FLAGS.items()]
 GENDER_CHOICES = [("male", "Male"), ("female", "FeMale"), ('other', "Other")]
 
 
@@ -56,7 +56,7 @@ class Employe(models.Model):
     issue_date = models.DateField()
     expiry_date = models.DateField()
     
-    country = models.CharField(max_length=3, choices=COUNTRY_CHOICES)
+    country = models.CharField(max_length=80, choices=COUNTRY_CHOICES)
     work_location = models.CharField(max_length=50, null=True, blank=True)
     language = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=30, null=True, blank=True)
