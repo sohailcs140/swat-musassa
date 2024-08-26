@@ -2,7 +2,6 @@
 
 - Python 3.12.4
 - Django 5.1
-- Other dependencies (list any other necessary libraries or services)
 
 ## Installation
 
