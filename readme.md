@@ -2,7 +2,9 @@
 
 - Python 3.12.4
 - Django 5.1
+
 - Mariadb 11.5.2
+
 
 ## Installation
 
@@ -46,6 +48,11 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+7. **Run the server**
+
+```
+python manage.py runserver
+```
 
 
 # Xampp Server Setup
