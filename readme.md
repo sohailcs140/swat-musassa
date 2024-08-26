@@ -11,7 +11,7 @@
 1. **Clone the repository:**
 
    ```
-    https://github.com/sohailcs140/swat-musassa.git
+    git clone https://github.com/sohailcs140/swat-musassa.git
    
    ```
 
