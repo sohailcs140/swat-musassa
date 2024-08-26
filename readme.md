@@ -1,7 +1,7 @@
 ## Requirements
 
-- Python 3.x
-- Django x.x (replace with your version)
+- Python 3.12.4
+- Django 5.1
 - Other dependencies (list any other necessary libraries or services)
 
 ## Installation
